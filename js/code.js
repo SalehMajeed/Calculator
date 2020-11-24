@@ -21,6 +21,9 @@ function print_output(num) {
 }
 
 function get_formatted_number(num) {
+  if (num == '-') {
+    return '';
+  }
   var n = Number(num);
   var value = n.toLocaleString('en');
   return value;
@@ -43,6 +46,30 @@ for (let i = 0; i < operator.length; i++) {
       if (output) {
         output = output.substr(0, output.length - 1);
         print_output(output);
+      }
+    } else {
+      var output = get_output();
+      var history = get_history();
+
+      if (output == '' && history != '') {
+        if (isNaN(history[history.length - 1])) {
+          history = history.substr(0, history.length - 1);
+        }
+      }
+
+      if (output != '' || history != '') {
+        output = output == '' ? output : reverse_number_format(output);
+        history = history + output;
+
+        if (this.id == '=') {
+          var result = eval(history);
+          print_output(result);
+          print_history('');
+        } else {
+          history = history + this.id;
+          print_history(history);
+          print_output('');
+        }
       }
     }
   });
